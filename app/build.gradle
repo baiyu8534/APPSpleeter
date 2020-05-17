@@ -1,0 +1,74 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.chaquo.python'
+
+android {
+    compileSdkVersion 27
+    flavorDimensions "abi"
+    productFlavors {
+        arm {
+            dimension "abi"
+            ndk { abiFilters "armeabi-v7a" }
+        }
+        x86 {
+            dimension "abi"
+            ndk { abiFilters "x86" }
+        }
+    }
+    defaultConfig {
+        applicationId "com.example.lenovo.appspleeter"
+        minSdkVersion 16
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
+        ndk {
+            // 指定abi，如需在模拟器调试，增加"x86"，否则指定"armeabi-v7a"即可
+            abiFilters "armeabi-v7a"
+        }
+        python {
+            // 指定python路径
+            buildPython "D:\\work-soft\\Anaconda3\\envs\\spleeter-py36\\python.exe"
+            pyc {
+                stdlib true
+            }
+            pip {
+//                install "requests"
+//                install "setuptools"
+//                install "pandas"
+//                install "tensorflow"
+//                install "ffmpeg-python"
+//                install "norbert"
+                install "librosa"
+                install "numpy"
+                install "ffmpeg"
+            }
+        }
+    }
+
+    sourceSets{
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+//    compile files('libs/libandroid_tensorflow_inference_java.jar')
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    implementation files('libs/libandroid_tensorflow_inference_java.jar')
+}
